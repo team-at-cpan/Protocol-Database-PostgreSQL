@@ -1,10 +1,10 @@
+Revision history for {{$dist->name}}
+
 {{$NEXT}}
-	Breaking API changes:
-	* Event handlers passed via ->configure will be added via Mixin::Event::Dispatch
-	->subscribe_to_event, which passes the event as the first parameter and does not
-	use the return value to determine whether or not we should remove the handler.
-	Existing code should use $event->unsubscribe instead of returning a false value,
-	and $event->instance to get access to the Protocol::PostgreSQL instance.
+
+    Forked from Protocol::PostgreSQL due to significant API changes.
+
+Old Protocol::PostgreSQL version history:
 
 0.008     2011-07-16 22:42:10 Europe/London
 	Switch to Mixin::Event::Dispatch for event handling. Now uses ->invoke_event and

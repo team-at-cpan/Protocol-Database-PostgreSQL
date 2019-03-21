@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::ReadyForQuery;
+package Protocol::Database::PostgreSQL::Backend::ReadyForQuery;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::ReadyForQuery
+Protocol::Database::PostgreSQL::Backend::ReadyForQuery
 
 =head1 DESCRIPTION
 
@@ -26,7 +26,7 @@ sub new_from_message {
     return $class->new(
         state => $state
     );
-    # $self->backend_state($Protocol::PostgreSQL::BACKEND_STATE{$state});
+    # $self->backend_state($Protocol::Database::PostgreSQL::BACKEND_STATE{$state});
     # $self->debug("Pending bind: " . join(',', @{$self->{pending_bind} || []}) . ", execute: " . join(',', @{$self->{pending_execute} || []}));
 
 #    return sub { $self->bus->invoke_event('ready_for_query'); $self }->() if @{$self->{pending_execute} || []};

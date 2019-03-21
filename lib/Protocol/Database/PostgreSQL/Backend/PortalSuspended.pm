@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::PortalSuspended;
+package Protocol::Database::PostgreSQL::Backend::PortalSuspended;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::PortalSuspended
+Protocol::Database::PostgreSQL::Backend::PortalSuspended
 
 =head1 DESCRIPTION
 

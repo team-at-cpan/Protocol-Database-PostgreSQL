@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::DataRow;
+package Protocol::Database::PostgreSQL::Backend::DataRow;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::DataRow
+Protocol::Database::PostgreSQL::Backend::DataRow
 
 =head1 DESCRIPTION
 

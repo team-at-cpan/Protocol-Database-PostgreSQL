@@ -1,4 +1,4 @@
-package Protocol::PostgreSQL;
+package Protocol::Database::PostgreSQL;
 # ABSTRACT: PostgreSQL wire protocol implementation
 use strict;
 use warnings;
@@ -7,13 +7,13 @@ our $VERSION = '1.000';
 
 =head1 NAME
 
-Protocol::PostgreSQL - support for the PostgreSQL wire protocol
+Protocol::Database::PostgreSQL - support for the PostgreSQL wire protocol
 
 =head1 SYNOPSIS
 
  use strict; use warnings;
  package PostgreSQL::Client;
- use parent q{Protocol::PostgreSQL::Client};
+ use parent q{Protocol::Database::PostgreSQL::Client};
 
  sub new { my $self = shift->SUPER::new(@_); $self->{socket} = $self->connect(...); $self }
  sub on_send_request { shift->socket->send(@_) }
@@ -183,32 +183,32 @@ use Ryu;
 use Future;
 use Sub::Identify;
 
-use Protocol::PostgreSQL::RowDescription;
-use Protocol::PostgreSQL::Statement;
+use Protocol::Database::PostgreSQL::RowDescription;
+use Protocol::Database::PostgreSQL::Statement;
 
-use Protocol::PostgreSQL::Backend::AuthenticationRequest;
-use Protocol::PostgreSQL::Backend::BackendKeyData;
-use Protocol::PostgreSQL::Backend::BindComplete;
-use Protocol::PostgreSQL::Backend::CloseComplete;
-use Protocol::PostgreSQL::Backend::CommandComplete;
-use Protocol::PostgreSQL::Backend::CopyData;
-use Protocol::PostgreSQL::Backend::CopyDone;
-use Protocol::PostgreSQL::Backend::CopyInResponse;
-use Protocol::PostgreSQL::Backend::CopyOutResponse;
-use Protocol::PostgreSQL::Backend::CopyBothResponse;
-use Protocol::PostgreSQL::Backend::DataRow;
-use Protocol::PostgreSQL::Backend::EmptyQueryResponse;
-use Protocol::PostgreSQL::Backend::ErrorResponse;
-use Protocol::PostgreSQL::Backend::FunctionCallResponse;
-use Protocol::PostgreSQL::Backend::NoData;
-use Protocol::PostgreSQL::Backend::NoticeResponse;
-use Protocol::PostgreSQL::Backend::NotificationResponse;
-use Protocol::PostgreSQL::Backend::ParameterDescription;
-use Protocol::PostgreSQL::Backend::ParameterStatus;
-use Protocol::PostgreSQL::Backend::ParseComplete;
-use Protocol::PostgreSQL::Backend::PortalSuspended;
-use Protocol::PostgreSQL::Backend::ReadyForQuery;
-use Protocol::PostgreSQL::Backend::RowDescription;
+use Protocol::Database::PostgreSQL::Backend::AuthenticationRequest;
+use Protocol::Database::PostgreSQL::Backend::BackendKeyData;
+use Protocol::Database::PostgreSQL::Backend::BindComplete;
+use Protocol::Database::PostgreSQL::Backend::CloseComplete;
+use Protocol::Database::PostgreSQL::Backend::CommandComplete;
+use Protocol::Database::PostgreSQL::Backend::CopyData;
+use Protocol::Database::PostgreSQL::Backend::CopyDone;
+use Protocol::Database::PostgreSQL::Backend::CopyInResponse;
+use Protocol::Database::PostgreSQL::Backend::CopyOutResponse;
+use Protocol::Database::PostgreSQL::Backend::CopyBothResponse;
+use Protocol::Database::PostgreSQL::Backend::DataRow;
+use Protocol::Database::PostgreSQL::Backend::EmptyQueryResponse;
+use Protocol::Database::PostgreSQL::Backend::ErrorResponse;
+use Protocol::Database::PostgreSQL::Backend::FunctionCallResponse;
+use Protocol::Database::PostgreSQL::Backend::NoData;
+use Protocol::Database::PostgreSQL::Backend::NoticeResponse;
+use Protocol::Database::PostgreSQL::Backend::NotificationResponse;
+use Protocol::Database::PostgreSQL::Backend::ParameterDescription;
+use Protocol::Database::PostgreSQL::Backend::ParameterStatus;
+use Protocol::Database::PostgreSQL::Backend::ParseComplete;
+use Protocol::Database::PostgreSQL::Backend::PortalSuspended;
+use Protocol::Database::PostgreSQL::Backend::ReadyForQuery;
+use Protocol::Database::PostgreSQL::Backend::RowDescription;
 
 # Currently v3.0, which is used in PostgreSQL 7.4+
 use constant PROTOCOL_VERSION   => 0x00030000;
@@ -1099,7 +1099,7 @@ sub handle_message {
 
     # Clear the ready-to-send flag until we've processed this
     $self->{is_ready} = 0;
-    return ('Protocol::PostgreSQL::Backend::' . $type)->new_from_message($msg);
+    return ('Protocol::Database::PostgreSQL::Backend::' . $type)->new_from_message($msg);
 }
 
 sub send_ssl_request {
@@ -1194,7 +1194,7 @@ sub backend_state {
 
 =head2 active_statement
 
-Returns the currently active L<Protocol::PostgreSQL::Statement> if we have one.
+Returns the currently active L<Protocol::Database::PostgreSQL::Statement> if we have one.
 
 =cut
 
@@ -1224,7 +1224,7 @@ sub row_description {
 
 =head2 prepare
 
-Prepare a L<Protocol::PostgreSQL::Statement>. Intended to be mostly compatible with the L<DBI>
+Prepare a L<Protocol::Database::PostgreSQL::Statement>. Intended to be mostly compatible with the L<DBI>
 ->prepare method.
 
 =cut
@@ -1237,7 +1237,7 @@ sub prepare {
 
 =head2 prepare_async
 
-Set up a L<Protocol::PostgreSQL::Statement> allowing callbacks and other options to be provided.
+Set up a L<Protocol::Database::PostgreSQL::Statement> allowing callbacks and other options to be provided.
 
 =cut
 
@@ -1246,7 +1246,7 @@ sub prepare_async {
     my %args = @_;
     die "SQL statement not provided" unless defined $args{sql};
 
-    my $sth = Protocol::PostgreSQL::Statement->new(
+    my $sth = Protocol::Database::PostgreSQL::Statement->new(
         dbh => $self,
         %args,
     );

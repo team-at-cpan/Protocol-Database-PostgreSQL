@@ -3,7 +3,7 @@ use warnings;
 
 use Test::More tests => 68;
 use Test::Fatal;
-use Protocol::PostgreSQL;
+use Protocol::Database::PostgreSQL;
 
 sub is_hex($$$) {
 	my ($check, $expected, $txt) = @_;
@@ -12,7 +12,7 @@ sub is_hex($$$) {
 }
 
 my @messages;
-my $pg = new_ok('Protocol::PostgreSQL' => [
+my $pg = new_ok('Protocol::Database::PostgreSQL' => [
 	on_send_request => sub {
 		push @messages, @_;
 	}
@@ -25,8 +25,8 @@ ok($pg->is_first_message, 'first message is true for unauthenticated instance');
 like(exception { $pg->_build_message }, qr/No type provided/, 'check for type when building message');
 like(exception { $pg->_build_message(type => 1) }, qr/No data provided/, 'check for data when building message');
 
-{ my %uniq; $uniq{$_}++ for values %Protocol::PostgreSQL::MESSAGE_TYPE_BACKEND; is($uniq{$_}, 1, "$_ is unique in backend message codes") for sort keys %uniq; }
-{ my %uniq; $uniq{$_}++ for values %Protocol::PostgreSQL::MESSAGE_TYPE_FRONTEND; is($uniq{$_}, 1, "$_ is unique in frontend message codes") for sort keys %uniq; }
+{ my %uniq; $uniq{$_}++ for values %Protocol::Database::PostgreSQL::MESSAGE_TYPE_BACKEND; is($uniq{$_}, 1, "$_ is unique in backend message codes") for sort keys %uniq; }
+{ my %uniq; $uniq{$_}++ for values %Protocol::Database::PostgreSQL::MESSAGE_TYPE_FRONTEND; is($uniq{$_}, 1, "$_ is unique in frontend message codes") for sort keys %uniq; }
 
 # Check that we get the right lengths for various things
 message_length_handling($pg);

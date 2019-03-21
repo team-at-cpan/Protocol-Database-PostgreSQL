@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::CommandComplete;
+package Protocol::Database::PostgreSQL::Backend::CommandComplete;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::CommandComplete - an authentication request message
+Protocol::Database::PostgreSQL::Backend::CommandComplete - an authentication request message
 
 =head1 DESCRIPTION
 

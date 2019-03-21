@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::FunctionCallResponse;
+package Protocol::Database::PostgreSQL::Backend::FunctionCallResponse;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::FunctionCallResponse
+Protocol::Database::PostgreSQL::Backend::FunctionCallResponse
 
 =head1 DESCRIPTION
 

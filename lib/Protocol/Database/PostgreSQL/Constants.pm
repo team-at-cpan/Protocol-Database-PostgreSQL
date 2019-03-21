@@ -1,4 +1,4 @@
-package Protocol::PostgreSQL::Constants;
+package Protocol::Database::PostgreSQL::Constants;
 
 use strict;
 use warnings;

@@ -1,4 +1,4 @@
-package Protocol::PostgreSQL::Statement;
+package Protocol::Database::PostgreSQL::Statement;
 
 use strict;
 use warnings;
@@ -10,11 +10,11 @@ use Data::Dumper;
 
 =head1 NAME
 
-Protocol::PostgreSQL::Statement - prepared statement handling
+Protocol::Database::PostgreSQL::Statement - prepared statement handling
 
 =head1 SYNOPSIS
 
- use Protocol::PostgreSQL;
+ use Protocol::Database::PostgreSQL;
  my %cache;
  # Helper method to apply the returned values
  my $set_cache = sub {
@@ -24,7 +24,7 @@ Protocol::PostgreSQL::Statement - prepared statement handling
 	$cache{$k} = $v;
  };
  # Prepared statement to insert a new value, called when no existing value was found
- my $add_sth = Protocol::PostgreSQL::Statement->new(
+ my $add_sth = Protocol::Database::PostgreSQL::Statement->new(
  	dbh => $dbh,
 	sql => 'insert into sometable (name) values $1 returning id, name',
 	on_data_row	=> $set_cache,
@@ -33,7 +33,7 @@ Protocol::PostgreSQL::Statement - prepared statement handling
 	}
  );
  # Find existing value from table
- my $find_sth = Protocol::PostgreSQL::Statement->new(
+ my $find_sth = Protocol::Database::PostgreSQL::Statement->new(
  	dbh => $dbh,
 	sql => 'select id, name from sometable where id = ?',
 	on_data_row	=> $set_cache,
@@ -48,7 +48,7 @@ Protocol::PostgreSQL::Statement - prepared statement handling
 
 =head1 DESCRIPTION
 
-Provides prepared-statement support for L<Protocol::PostgreSQL>.
+Provides prepared-statement support for L<Protocol::Database::PostgreSQL>.
 
 Sequence of events for a prepared statement:
 
@@ -60,7 +60,7 @@ Sequence of events for a prepared statement:
 
 =item * Execute - execute a given portal
 
-=item * Sync - inform the server we're done and that we want to go back to L<Protocol::PostgreSQL/ReadyForQuery> state.
+=item * Sync - inform the server we're done and that we want to go back to L<Protocol::Database::PostgreSQL/ReadyForQuery> state.
 
 =back
 
@@ -81,7 +81,7 @@ Instantiate a new object, takes the following named parameters:
 
 =over 4
 
-=item * dbh - L<Protocol::PostgreSQL>-compatible object for the parent database handle
+=item * dbh - L<Protocol::Database::PostgreSQL>-compatible object for the parent database handle
 
 =item * sql - actual SQL query to run, with placeholders specified as ?
 
@@ -371,7 +371,7 @@ sub finish {
 
 =head2 dbh
 
-Accessor for the database handle (L<Protocol::PostgreSQL> object).
+Accessor for the database handle (L<Protocol::Database::PostgreSQL> object).
 
 =cut
 

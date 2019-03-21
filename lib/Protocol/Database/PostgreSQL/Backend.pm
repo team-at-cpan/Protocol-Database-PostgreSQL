@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend;
+package Protocol::Database::PostgreSQL::Backend;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Message);
+use parent qw(Protocol::Database::PostgreSQL::Message);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend - base class for all backend message types
+Protocol::Database::PostgreSQL::Backend - base class for all backend message types
 
 =cut
 

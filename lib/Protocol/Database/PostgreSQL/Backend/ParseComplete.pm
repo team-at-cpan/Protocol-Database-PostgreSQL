@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::ParseComplete;
+package Protocol::Database::PostgreSQL::Backend::ParseComplete;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::ParseComplete
+Protocol::Database::PostgreSQL::Backend::ParseComplete
 
 =head1 DESCRIPTION
 

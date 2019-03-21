@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 14;
-use Protocol::PostgreSQL::Client;
+use Protocol::Database::PostgreSQL::Client;
 
 # helper for checking we're constructing the right message
 sub is_hex($$$) {
@@ -19,7 +19,7 @@ sub mkmsg {
 
 note 'Test startup and auth';
 my @queue;
-my $pg = new_ok('Protocol::PostgreSQL::Client' => [
+my $pg = new_ok('Protocol::Database::PostgreSQL::Client' => [
 	debug => 0,
 	on_send_request	=> sub {
 		my ($self, $msg) = @_;

@@ -1,4 +1,4 @@
-package Protocol::PostgreSQL::Transaction;
+package Protocol::Database::PostgreSQL::Transaction;
 
 use strict;
 use warnings;

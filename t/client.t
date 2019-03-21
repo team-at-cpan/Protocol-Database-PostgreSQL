@@ -3,7 +3,7 @@ use warnings;
 
 # Client specific protocol tests, with simulated server responses
 use Test::More tests => 97;
-use Protocol::PostgreSQL::Client;
+use Protocol::Database::PostgreSQL::Client;
 
 # helper for checking we're constructing the right message
 sub is_hex($$$) {
@@ -20,7 +20,7 @@ sub mkmsg {
 
 note 'Test startup and auth';
 my @queue;
-my $pg = new_ok('Protocol::PostgreSQL::Client' => [
+my $pg = new_ok('Protocol::Database::PostgreSQL::Client' => [
 	debug => 0,
 	on_send_request	=> sub {
 		my ($self, $msg) = @_;
@@ -114,10 +114,10 @@ is_hex($msg, '51 00 00 00 24 73 65 6c 65 63 74 20 31 20 61 73 20 22 6e 61 6d 65 
 
 # Now simulate the incoming responses
 ok($pg->handle_message(mkmsg('54 00 00 00 04 00 01 6e 61 6d 65 00 00 00 00 00 00 00 00 00 00 01 00 04 00 00 00 00 00 00')), 'simulate RowDescription');
-isa_ok($row_desc, 'Protocol::PostgreSQL::RowDescription');
+isa_ok($row_desc, 'Protocol::Database::PostgreSQL::RowDescription');
 is($row_desc->field_count, 1, 'have one field');
 my $f = $row_desc->field_index(0);
-isa_ok($f, 'Protocol::PostgreSQL::FieldDescription');
+isa_ok($f, 'Protocol::Database::PostgreSQL::FieldDescription');
 is($f->name, 'name', 'name matches');
 
 # Then the data
@@ -151,13 +151,13 @@ is_hex($msg, '51 00 00 00 4c 73 65 6c 65 63 74 20 22 69 64 22 2c 20 22 6e 61 6d 
 # Description
 ok($pg->handle_message(mkmsg('54 00 00 00 04 00 02 69 64 00 00 00 00 00 00 00 00 00 00 01 00 04 00 00 00 00 00 00 6e 61 6d 65 00 00 00 00 00 00 00 00 00 00 01 00 04 00 00 00 00 00 00')), 'simulate RowDescription');
 
-isa_ok($row_desc, 'Protocol::PostgreSQL::RowDescription');
+isa_ok($row_desc, 'Protocol::Database::PostgreSQL::RowDescription');
 is($row_desc->field_count, 2, 'have two fields');
 $f = $row_desc->field_index(0);
-isa_ok($f, 'Protocol::PostgreSQL::FieldDescription');
+isa_ok($f, 'Protocol::Database::PostgreSQL::FieldDescription');
 is($f->name, 'id', 'name matches');
 $f = $row_desc->field_index(1);
-isa_ok($f, 'Protocol::PostgreSQL::FieldDescription');
+isa_ok($f, 'Protocol::Database::PostgreSQL::FieldDescription');
 is($f->name, 'name', 'name matches');
 
 ok(!$data_row, 'no data row yet');

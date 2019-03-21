@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::BindComplete;
+package Protocol::Database::PostgreSQL::Backend::BindComplete;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::BindComplete - an authentication request message
+Protocol::Database::PostgreSQL::Backend::BindComplete - an authentication request message
 
 =head1 DESCRIPTION
 

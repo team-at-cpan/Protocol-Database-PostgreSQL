@@ -1,11 +1,11 @@
-package Protocol::PostgreSQL::RowDescription;
+package Protocol::Database::PostgreSQL::RowDescription;
 
 use strict;
 use warnings;
 
 =head1 NAME
 
-Protocol::PostgreSQL::RowDescription - row definitions
+Protocol::Database::PostgreSQL::RowDescription - row definitions
 
 =head1 SYNOPSIS
 
@@ -13,7 +13,7 @@ Protocol::PostgreSQL::RowDescription - row definitions
 
 =cut
 
-use Protocol::PostgreSQL::FieldDescription;
+use Protocol::Database::PostgreSQL::FieldDescription;
 
 =head1 METHODS
 

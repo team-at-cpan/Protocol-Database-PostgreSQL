@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::NoData;
+package Protocol::Database::PostgreSQL::Backend::NoData;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::NoData
+Protocol::Database::PostgreSQL::Backend::NoData
 
 =head1 DESCRIPTION
 

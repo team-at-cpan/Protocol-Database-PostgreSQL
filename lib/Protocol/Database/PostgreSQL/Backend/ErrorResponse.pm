@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::ErrorResponse;
+package Protocol::Database::PostgreSQL::Backend::ErrorResponse;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::ErrorResponse
+Protocol::Database::PostgreSQL::Backend::ErrorResponse
 
 =head1 DESCRIPTION
 
@@ -29,8 +29,8 @@ sub new_from_message {
         my ($code, $str) = unpack('A1Z*', $msg);
         last FIELD unless $code && $code ne "\0";
 
-        die "Unknown NOTICE code [$code]" unless exists $Protocol::PostgreSQL::NOTICE_CODE{$code};
-        $notice{$Protocol::PostgreSQL::NOTICE_CODE{$code}} = $str;
+        die "Unknown NOTICE code [$code]" unless exists $Protocol::Database::PostgreSQL::NOTICE_CODE{$code};
+        $notice{$Protocol::Database::PostgreSQL::NOTICE_CODE{$code}} = $str;
         substr $msg, 0, 2+length($str), '';
     }
     $log->errorf("Error was %s", \%notice);

@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::BackendKeyData;
+package Protocol::Database::PostgreSQL::Backend::BackendKeyData;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::BackendKeyData - an authentication request message
+Protocol::Database::PostgreSQL::Backend::BackendKeyData - an authentication request message
 
 =head1 DESCRIPTION
 

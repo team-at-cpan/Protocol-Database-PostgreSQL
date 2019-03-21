@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::AuthenticationRequest;
+package Protocol::Database::PostgreSQL::Backend::AuthenticationRequest;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::AuthenticationRequest - an authentication request message
+Protocol::Database::PostgreSQL::Backend::AuthenticationRequest - an authentication request message
 
 =head1 DESCRIPTION
 
@@ -27,7 +27,7 @@ sub new_from_message {
     my ($class, $msg) = @_;
 
     my (undef, undef, $auth_code, $data) = unpack('C1N1N1a*', $msg);
-    my $auth_type = $Protocol::PostgreSQL::AUTH_TYPE{$auth_code} or die "Invalid auth code $auth_code received";
+    my $auth_type = $Protocol::Database::PostgreSQL::AUTH_TYPE{$auth_code} or die "Invalid auth code $auth_code received";
     $log->tracef("Auth message [%s]", $auth_type);
     my %info = (
         auth_type => $auth_type,

@@ -1,11 +1,11 @@
-package Protocol::PostgreSQL::FieldDescription;
+package Protocol::Database::PostgreSQL::FieldDescription;
 
 use strict;
 use warnings;
 
 =head1 NAME
 
-Protocol::PostgreSQL::FieldDescription - field definitions
+Protocol::Database::PostgreSQL::FieldDescription - field definitions
 
 =head1 SYNOPSIS
 

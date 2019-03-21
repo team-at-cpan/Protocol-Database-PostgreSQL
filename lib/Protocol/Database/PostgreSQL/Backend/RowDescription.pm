@@ -1,27 +1,27 @@
-package Protocol::PostgreSQL::Backend::RowDescription;
+package Protocol::Database::PostgreSQL::Backend::RowDescription;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::RowDescription
+Protocol::Database::PostgreSQL::Backend::RowDescription
 
 =head1 DESCRIPTION
 
 =cut
 
-use Protocol::PostgreSQL::RowDescription;
-use Protocol::PostgreSQL::FieldDescription;
+use Protocol::Database::PostgreSQL::RowDescription;
+use Protocol::Database::PostgreSQL::FieldDescription;
 
 sub parse {
     my ($self, $msg) = @_;
     my (undef, undef, $count) = unpack('C1N1n1', $msg);
-    my $row = Protocol::PostgreSQL::RowDescription->new;
+    my $row = Protocol::Database::PostgreSQL::RowDescription->new;
     substr $msg, 0, 7, '';
     foreach my $id (0..$count-1) {
         my ($name, $table_id, $field_id, $data_type, $data_size, $type_modifier, $format_code) = unpack('Z*N1n1N1n1N1n1', $msg);
@@ -35,7 +35,7 @@ sub parse {
             format_code   => $format_code
         );
         $self->debug($_ . ' => ' . $data{$_}) for sort keys %data;
-        my $field = Protocol::PostgreSQL::FieldDescription->new(%data);
+        my $field = Protocol::Database::PostgreSQL::FieldDescription->new(%data);
         $row->add_field($field);
         substr $msg, 0, 19 + length($name), '';
     }

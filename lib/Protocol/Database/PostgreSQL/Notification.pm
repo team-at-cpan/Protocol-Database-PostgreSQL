@@ -1,4 +1,4 @@
-package Protocol::PostgreSQL::Notification;
+package Protocol::Database::PostgreSQL::Notification;
 
 use strict;
 use warnings;

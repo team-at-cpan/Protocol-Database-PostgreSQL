@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::CopyDone;
+package Protocol::Database::PostgreSQL::Backend::CopyDone;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::CopyDone
+Protocol::Database::PostgreSQL::Backend::CopyDone
 
 =head1 DESCRIPTION
 

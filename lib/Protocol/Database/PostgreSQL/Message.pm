@@ -1,4 +1,4 @@
-package Protocol::PostgreSQL::Message;
+package Protocol::Database::PostgreSQL::Message;
 
 use strict;
 use warnings;
@@ -7,7 +7,7 @@ use warnings;
 
 =head1 NAME
 
-Protocol::PostgreSQL::Message - base class for all message types
+Protocol::Database::PostgreSQL::Message - base class for all message types
 
 =head1 DESCRIPTION
 

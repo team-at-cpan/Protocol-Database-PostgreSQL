@@ -1,13 +1,13 @@
-package Protocol::PostgreSQL::Client;
+package Protocol::Database::PostgreSQL::Client;
 
 use strict;
 use warnings;
 
-use parent q{Protocol::PostgreSQL};
+use parent q{Protocol::Database::PostgreSQL};
 
 =head1 NAME
 
-Protocol::PostgreSQL::Client - support for the PostgreSQL wire protocol
+Protocol::Database::PostgreSQL::Client - support for the PostgreSQL wire protocol
 
 =head1 SYNOPSIS
 

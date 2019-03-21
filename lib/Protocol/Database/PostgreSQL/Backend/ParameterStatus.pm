@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::ParameterStatus;
+package Protocol::Database::PostgreSQL::Backend::ParameterStatus;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::ParameterStatus
+Protocol::Database::PostgreSQL::Backend::ParameterStatus
 
 =head1 DESCRIPTION
 

@@ -1,15 +1,15 @@
-package Protocol::PostgreSQL::Backend::NoticeResponse;
+package Protocol::Database::PostgreSQL::Backend::NoticeResponse;
 
 use strict;
 use warnings;
 
 # VERSION
 
-use parent qw(Protocol::PostgreSQL::Backend);
+use parent qw(Protocol::Database::PostgreSQL::Backend);
 
 =head1 NAME
 
-Protocol::PostgreSQL::Backend::NoticeResponse
+Protocol::Database::PostgreSQL::Backend::NoticeResponse
 
 =head1 DESCRIPTION
 
@@ -27,8 +27,8 @@ sub parse {
         my ($code, $str) = unpack('A1Z*', $msg);
         last FIELD unless $code && $code ne "\0";
 
-        die "Unknown NOTICE code [$code]" unless exists $Protocol::PostgreSQL::NOTICE_CODE{$code};
-        $notice{$Protocol::PostgreSQL::NOTICE_CODE{$code}} = $str;
+        die "Unknown NOTICE code [$code]" unless exists $Protocol::Database::PostgreSQL::NOTICE_CODE{$code};
+        $notice{$Protocol::Database::PostgreSQL::NOTICE_CODE{$code}} = $str;
         substr $msg, 0, 2+length($str), '';
     }
 #    $self->bus->invoke_event('notice', notice => \%notice);

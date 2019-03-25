@@ -15,6 +15,12 @@ use constant {
     SSL_REQUIRE => 2,
 };
 
+our %SSL_NAME_MAP = (
+    disable => SSL_DISABLE,
+    prefer  => SSL_PREFER,
+    require => SSL_REQUIRE,
+);
+
 our %EXPORT_TAGS = (
     v1 => [qw(SSL_DISABLE SSL_PREFER SSL_REQUIRE)],
 );

@@ -17,8 +17,8 @@ Protocol::Database::PostgreSQL::Backend::CopyInResponse
 
 sub type { 'copy_in_response' }
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, undef, my $type, my $count) = unpack('C1N1C1n1', $msg);
     substr $msg, 0, 8, '';
     my @formats;
@@ -26,8 +26,9 @@ sub parse {
         push @formats, unpack('n1', $msg);
         substr $msg, 0, 2, '';
     }
-#    $self->bus->invoke_event('copy_in_response', count => $count, columns => \@formats);
-    return $self;
+    return $class->new(
+        formats => \@formats
+    );
 }
 
 1;

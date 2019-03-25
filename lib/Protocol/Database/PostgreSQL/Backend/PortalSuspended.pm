@@ -15,15 +15,10 @@ Protocol::Database::PostgreSQL::Backend::PortalSuspended
 
 =cut
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, my $size) = unpack('C1N1', $msg);
-    if(@{$self->{pending_execute}}) {
-        my $last = shift @{$self->{pending_execute}};
-        $self->debug("Suspended portal for $last");
-    }
-#    $self->bus->invoke_event('portal_suspended');
-    return $self;
+    return $class->new;
 }
 
 1;

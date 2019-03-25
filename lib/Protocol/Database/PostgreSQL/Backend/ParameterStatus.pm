@@ -15,24 +15,18 @@ Protocol::Database::PostgreSQL::Backend::ParameterStatus
 
 =cut
 
+sub key { shift->{key} }
+sub value { shift->{value} }
+
 sub new_from_message {
     my ($class, $msg) = @_;
 
     # Extract size then reset pointer to start of parameters
-    (undef, my $size) = unpack('C1N1', $msg);
-    substr $msg, 0, 5, '';
+    my (undef, undef, $k, $v) = unpack('C1N1Z*Z*', $msg);
 
-    my %status;
-    # Series of key,value pairs
-    PARAMETER:
-    while(1) {
-        my ($k, $v) = unpack('Z*Z*', $msg);
-        last PARAMETER unless defined($k) && length($k);
-        $status{$k} = $v;
-        substr $msg, 0, length($k) + length($v) + 2, '';
-    }
     return $class->new(
-        %status
+        key => $k,
+        value => $v,
     );
 }
 

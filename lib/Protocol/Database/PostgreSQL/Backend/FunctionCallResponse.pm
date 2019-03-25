@@ -17,13 +17,14 @@ Protocol::Database::PostgreSQL::Backend::FunctionCallResponse
 
 sub type { 'function_call_response' }
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, my $size, my $len) = unpack('C1N1N1', $msg);
     substr $msg, 0, 9, '';
     my $data = ($len == 0xFFFFFFFF) ? undef : substr $msg, 0, $len;
-#    $self->bus->invoke_event('function_call_response', data => $data);
-    return $self;
+    return $class->new(
+        data => $data,
+    );
 }
 
 1;

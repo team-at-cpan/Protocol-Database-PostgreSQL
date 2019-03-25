@@ -22,18 +22,10 @@ sub state : method { shift->{state} }
 sub new_from_message {
     my ($class, $msg) = @_;
     my (undef, undef, $state) = unpack('C1N1A1', $msg);
-    $log->debugf("Backend state is %s", $state);
+    $log->tracef("Backend state is %s", $state);
     return $class->new(
         state => $state
     );
-    # $self->backend_state($Protocol::Database::PostgreSQL::BACKEND_STATE{$state});
-    # $self->debug("Pending bind: " . join(',', @{$self->{pending_bind} || []}) . ", execute: " . join(',', @{$self->{pending_execute} || []}));
-
-#    return sub { $self->bus->invoke_event('ready_for_query'); $self }->() if @{$self->{pending_execute} || []};
-    # $self->is_ready(1);
-    # return $self->send_next_in_queue if $self->has_queued;
-#    $self->bus->invoke_event('ready_for_query');
-    #return $self;
 }
 
 1;

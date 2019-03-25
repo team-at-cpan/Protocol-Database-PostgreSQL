@@ -17,14 +17,9 @@ Protocol::Database::PostgreSQL::Backend::EmptyQueryResponse
 
 sub type { 'empty_query_response' }
 
-sub parse {
-    my ($self, $msg) = @_;
-    if(@{$self->{pending_execute}}) {
-        my $last = shift @{$self->{pending_execute}};
-        $self->debug("Finished command for $last");
-    }
-#    $self->bus->invoke_event('empty_query');
-    return $self;
+sub new_from_message {
+    my ($class, $msg) = @_;
+    return $class->new;
 }
 
 1;

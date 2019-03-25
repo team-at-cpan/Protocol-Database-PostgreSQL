@@ -15,12 +15,11 @@ Protocol::Database::PostgreSQL::Backend::ParseComplete
 
 =cut
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, my $size) = unpack('C1N1', $msg);
-    $self->active_statement->parse_complete if $self->active_statement;
-#    $self->bus->invoke_event('parse_complete');
-    return $self;
+    # $self->active_statement->parse_complete if $self->active_statement;
+    return $class->new;
 }
 
 1;

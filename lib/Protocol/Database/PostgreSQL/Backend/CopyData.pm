@@ -17,7 +17,7 @@ Protocol::Database::PostgreSQL::Backend::CopyData
 
 sub type { 'copy_data' }
 
-sub parse {
+sub new_from_message {
     my ($self, $msg) = @_;
     ...
 }

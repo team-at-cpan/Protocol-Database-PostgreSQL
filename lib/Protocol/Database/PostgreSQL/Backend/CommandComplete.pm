@@ -17,16 +17,14 @@ Protocol::Database::PostgreSQL::Backend::CommandComplete - an authentication req
 
 sub type { 'command_complete' }
 
-sub parse {
-    my ($self, $msg) = @_;
+sub result { shift->{result} }
+
+sub new_from_message {
+    my ($class, $msg) = @_;
     my (undef, undef, $result) = unpack('C1N1Z*', $msg);
-    if(@{$self->{pending_execute}}) {
-        my $last = shift @{$self->{pending_execute}};
-        $self->debug("Finished command for $last");
-        $last->command_complete if $last;
-    }
-#    $self->bus->invoke_event('command_complete', result => $result);
-    return $self;
+    return $class->new(
+        result => $result
+    );
 }
 
 1;

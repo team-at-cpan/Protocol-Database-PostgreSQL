@@ -15,36 +15,28 @@ Protocol::Database::PostgreSQL::Backend::DataRow
 
 =cut
 
+use Log::Any qw($log);
+
 sub type { 'data_row' }
 
-sub parse {
-    my ($self, $msg) = @_;
+sub fields { shift->{fields}->@* }
+
+sub new_from_message {
+    my ($class, $msg) = @_;
     my (undef, undef, $count) = unpack('C1N1n1', $msg);
     substr $msg, 0, 7, '';
     my @fields;
-    # TODO Tidy this up
-    my $sth = @{$self->{pending_execute}} ? $self->{pending_execute}[0] : $self->active_statement;
-    my $desc = $sth ? $sth->row_description : $self->row_description;
-    die "No description available?\n" unless $desc;
-    foreach my $idx (0..$count-1) {
-        my $field = $desc->field_index($idx);
-        my ($size) = unpack('N1', $msg);
-        substr $msg, 0, 4, '';
-        my $data;
-        my $null = ($size == 0xFFFFFFFF);
-        unless($null) {
-            $data = $field->parse_data($msg, $size);
-            substr $msg, 0, $size, '';
-        }
-        push @fields, {
-            null        => $null,
-            description => $field,
-            data        => $null ? undef : $data,
+    foreach my $idx (0..$count - 1) {
+        my ($size) = unpack('N1', substr $msg, 0, 4, '');
+        if($size == 0xFFFFFFFF) {
+            push @fields, undef;
+        } else {
+            push @fields, substr $msg, 0, $size, '';
         }
     }
-    $sth->data_row(\@fields) if $sth;
-#    $self->bus->invoke_event('data_row', row => \@fields);
-    return $self;
+    return $class->new(
+        fields => \@fields
+    )
 }
 
 1;

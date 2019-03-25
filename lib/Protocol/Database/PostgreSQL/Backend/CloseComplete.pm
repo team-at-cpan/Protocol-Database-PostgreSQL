@@ -17,16 +17,11 @@ Protocol::Database::PostgreSQL::Backend::CloseComplete - an authentication reque
 
 sub type { 'close_complete' }
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, my $size) = unpack('C1N1', $msg);
 
-    # Handler could be undef - we always push something to keep things symmetrical
-    if(my $handler = shift @{$self->{pending_close}}) {
-        $handler->($self);
-    }
-#    $self->bus->invoke_event('close_complete');
-    return $self;
+    return $class->new;
 }
 
 1;

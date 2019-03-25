@@ -17,15 +17,10 @@ Protocol::Database::PostgreSQL::Backend::BindComplete - an authentication reques
 
 sub type { 'bind_complete' }
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, my $size) = unpack('C1N1', $msg);
-    if(my $sth = shift(@{$self->{pending_bind}})) {
-        $self->debug("Pass over to statement $sth");
-        $sth->bind_complete;
-    }
-#    $self->bus->invoke_event('bind_complete');
-    return $self;
+    return $class->new;
 }
 
 1;

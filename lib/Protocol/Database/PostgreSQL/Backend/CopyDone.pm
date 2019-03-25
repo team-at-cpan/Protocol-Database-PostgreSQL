@@ -17,9 +17,9 @@ Protocol::Database::PostgreSQL::Backend::CopyDone
 
 sub type { 'copy_done' }
 
-sub parse {
-    my ($self, $msg) = @_;
-    ...
+sub new_from_message {
+    my ($class, $msg) = @_;
+    return $class->new;
 }
 
 1;

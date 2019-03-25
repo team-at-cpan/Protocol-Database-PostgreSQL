@@ -17,8 +17,8 @@ Protocol::Database::PostgreSQL::Backend::NoticeResponse
 
 sub type { 'notice_response' }
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, my $size) = unpack('C1N1', $msg);
     substr $msg, 0, 5, '';
     my %notice;
@@ -31,8 +31,9 @@ sub parse {
         $notice{$Protocol::Database::PostgreSQL::NOTICE_CODE{$code}} = $str;
         substr $msg, 0, 2+length($str), '';
     }
-#    $self->bus->invoke_event('notice', notice => \%notice);
-    return $self;
+    return $class->new(
+        %notice
+    );
 }
 
 1;

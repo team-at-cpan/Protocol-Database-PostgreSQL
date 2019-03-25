@@ -17,11 +17,10 @@ Protocol::Database::PostgreSQL::Backend::NoData
 
 sub type { 'no_data' }
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, my $size) = unpack('C1N1', $msg);
-#    $self->bus->invoke_event('no_data');
-    return $self;
+    return $class->new;
 }
 
 1;

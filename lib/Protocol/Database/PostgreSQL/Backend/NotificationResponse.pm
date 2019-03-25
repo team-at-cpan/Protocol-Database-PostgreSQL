@@ -15,11 +15,14 @@ Protocol::Database::PostgreSQL::Backend::NotificationResponse
 
 =cut
 
-sub parse {
-    my ($self, $msg) = @_;
+sub new_from_message {
+    my ($class, $msg) = @_;
     (undef, my $size, my $pid, my $channel, my $data) = unpack('C1N1N1Z*Z*', $msg);
-#    $self->bus->invoke_event('notification', pid => $pid, channel => $channel, data => $data);
-    return $self;
+    return $class->new(
+        pid => $pid,
+        channel => $channel,
+        data => $data
+    );
 }
 
 1;

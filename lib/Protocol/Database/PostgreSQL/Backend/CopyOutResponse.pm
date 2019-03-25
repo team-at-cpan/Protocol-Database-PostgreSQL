@@ -17,9 +17,9 @@ Protocol::Database::PostgreSQL::Backend::CopyOutResponse
 
 sub type { 'copy_out_response' }
 
-sub parse {
-    my ($self, $msg) = @_;
-    ...
+sub new_from_message {
+    my ($class, $msg) = @_;
+    return $class->new;
 }
 
 1;

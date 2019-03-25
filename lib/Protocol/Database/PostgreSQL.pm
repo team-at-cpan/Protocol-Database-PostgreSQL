@@ -760,14 +760,15 @@ sub frontend_describe {
     my ($self, %args) = @_;
 
     my $msg = pack('a1Z*', exists $args{portal} ? 'P' : 'S', defined($args{statement}) ? $args{statement} : (defined($args{portal}) ? $args{portal} : ''));
-    push @{$self->{pending_describe}}, $args{sth} if $args{sth};
+    # push @{$self->{pending_describe}}, $args{sth} if $args{sth};
     return $self->build_message(
         type    => 'Describe',
         data    => $msg,
-    ) . $self->build_message(
-        type    => 'Query',
-        data    => "\0"
     );
+    # . $self->build_message(
+    #     type    => 'Query',
+    #     data    => "\0"
+    # );
 }
 
 =head2 frontend_execute

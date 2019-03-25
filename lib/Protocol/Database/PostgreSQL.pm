@@ -184,7 +184,6 @@ use Future;
 use Sub::Identify;
 
 use Protocol::Database::PostgreSQL::RowDescription;
-use Protocol::Database::PostgreSQL::Statement;
 
 use Protocol::Database::PostgreSQL::Backend::AuthenticationRequest;
 use Protocol::Database::PostgreSQL::Backend::BackendKeyData;
@@ -1120,67 +1119,6 @@ sub backend_state {
         return $self;
     }
     return $self->{backend_state};
-}
-
-=head2 active_statement
-
-Returns the currently active L<Protocol::Database::PostgreSQL::Statement> if we have one.
-
-=cut
-
-sub active_statement {
-    my $self = shift;
-    if(@_) {
-        $self->{active_statement} = shift;
-        return $self;
-    }
-    return $self->{active_statement};
-}
-
-=head2 row_description
-
-Accessor for row description.
-
-=cut
-
-sub row_description {
-    my $self = shift;
-    if(@_) {
-        $self->{row_description} = shift;
-        return $self;
-    }
-    return $self->{row_description};
-}
-
-=head2 prepare
-
-Prepare a L<Protocol::Database::PostgreSQL::Statement>. Intended to be mostly compatible with the L<DBI>
-->prepare method.
-
-=cut
-
-sub prepare {
-    my $self = shift;
-    my $sql = shift;
-    return $self->prepare_async(sql => $sql);
-}
-
-=head2 prepare_async
-
-Set up a L<Protocol::Database::PostgreSQL::Statement>.
-
-=cut
-
-sub prepare_async {
-    my $self = shift;
-    my %args = @_;
-    die "SQL statement not provided" unless defined $args{sql};
-
-    my $sth = Protocol::Database::PostgreSQL::Statement->new(
-        dbh => $self,
-        %args,
-    );
-    return $sth;
 }
 
 =head2 is_ready

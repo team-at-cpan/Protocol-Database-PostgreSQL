@@ -2,29 +2,41 @@
 use strict;
 use warnings;
 
-use 5.010001;
+use 5.010;
 
-use ExtUtils::MakeMaker 6.48;
+use ExtUtils::MakeMaker;
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "PostgreSQL wire protocol implementation",
-  "AUTHOR" => "Tom Molesworth <cpan\@entitymodel.com>",
+  "AUTHOR" => "Tom Molesworth <TEAM\@cpan.org>",
   "CONFIGURE_REQUIRES" => {
-    "ExtUtils::MakeMaker" => "6.48"
+    "ExtUtils::MakeMaker" => 0
   },
-  "DISTNAME" => "Protocol-PostgreSQL",
+  "DISTNAME" => "Protocol-Database-PostgreSQL",
   "LICENSE" => "perl",
-  "MIN_PERL_VERSION" => "5.010001",
-  "NAME" => "Protocol::PostgreSQL",
+  "MIN_PERL_VERSION" => "5.010",
+  "NAME" => "Protocol::Database::PostgreSQL",
   "PREREQ_PM" => {
+    "Adapter::Async::Model" => 0,
     "Check::UnitCheck" => 0,
+    "Data::Dumper" => 0,
     "Digest::MD5" => 0,
+    "Exporter" => 0,
+    "Future" => 0,
+    "JSON::MaybeXS" => 0,
+    "List::Util" => 0,
     "Log::Any" => "1.050",
+    "Log::Any::Adapter" => 0,
     "Mixin::Event::Dispatch" => "2.000",
     "POSIX" => 0,
     "Ryu" => "0.023",
+    "Scalar::Util" => 0,
+    "Sub::Identify" => 0,
     "Time::HiRes" => 0,
-    "parent" => 0
+    "constant" => 0,
+    "parent" => 0,
+    "strict" => 0,
+    "warnings" => 0
   },
   "TEST_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0,
@@ -35,9 +47,10 @@ my %WriteMakefileArgs = (
     "Test::Fatal" => "0.010",
     "Test::HexString" => "0.03",
     "Test::More" => "0.98",
-    "Test::Refcount" => "0.07"
+    "Test::Refcount" => "0.07",
+    "Test::Warnings" => 0
   },
-  "VERSION" => "0.009",
+  "VERSION" => "1.000",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -45,23 +58,36 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Adapter::Async::Model" => 0,
   "Check::UnitCheck" => 0,
+  "Data::Dumper" => 0,
   "Digest::MD5" => 0,
+  "Exporter" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec" => 0,
+  "Future" => 0,
   "IO::Handle" => 0,
   "IPC::Open3" => 0,
+  "JSON::MaybeXS" => 0,
+  "List::Util" => 0,
   "Log::Any" => "1.050",
+  "Log::Any::Adapter" => 0,
   "Mixin::Event::Dispatch" => "2.000",
   "POSIX" => 0,
   "Ryu" => "0.023",
+  "Scalar::Util" => 0,
+  "Sub::Identify" => 0,
   "Test::CheckDeps" => "0.010",
   "Test::Fatal" => "0.010",
   "Test::HexString" => "0.03",
   "Test::More" => "0.98",
   "Test::Refcount" => "0.07",
+  "Test::Warnings" => 0,
   "Time::HiRes" => 0,
-  "parent" => 0
+  "constant" => 0,
+  "parent" => 0,
+  "strict" => 0,
+  "warnings" => 0
 );
 
 

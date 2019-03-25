@@ -3,7 +3,7 @@ package Protocol::Database::PostgreSQL::Constants;
 use strict;
 use warnings;
 
-## VERSION
+# VERSION
 
 use Exporter qw(import export_to_level);
 
@@ -27,4 +27,14 @@ our %EXPORT_TAGS = (
 our @EXPORT_OK = uniqstr map { @$_ } values %EXPORT_TAGS;
 
 1;
+
+__END__
+
+=head1 AUTHOR
+
+Tom Molesworth <TEAM@cpan.org>
+
+=head1 LICENSE
+
+Copyright Tom Molesworth 2010-2019. Licensed under the same terms as Perl itself.
 

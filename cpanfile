@@ -2,10 +2,10 @@ requires 'parent';
 requires 'Digest::MD5';
 requires 'Time::HiRes';
 requires 'POSIX';
-requires 'Mixin::Event::Dispatch', '>= 2.000';
 requires 'Ryu', '>= 0.023';
 requires 'Log::Any', '>= 1.050';
 requires 'Check::UnitCheck', 0;
+requires 'Adapter::Async', 0;
 
 on 'test' => sub {
 	test_requires 'Test::More', '>= 0.98';

@@ -80,19 +80,19 @@ Possible states:
 
 =end HTML
 
-=head2 Callbacks
+=head2 Message types
 
-The following callbacks can be provided either as parameters to L</new> or as methods in subclasses:
+The L<Protocol::Database::Backend/type> for incoming messages can currently include the following:
 
 =over 4
 
-=item * C<on_send_request> - Called each time there is a new message to be sent to the other side of the connection.
+=item * C<send_request> - Called each time there is a new message to be sent to the other side of the connection.
 
-=item * C<on_authenticated> - Called when authentication is complete
+=item * C<authenticated> - Called when authentication is complete
 
-=item * C<on_copy_data> - we have received data from an ongoing COPY request
+=item * C<copy_data> - we have received data from an ongoing COPY request
 
-=item * C<on_copy_complete> - the active COPY request has completed
+=item * C<copy_complete> - the active COPY request has completed
 
 =back
 
@@ -100,75 +100,75 @@ For the client, the following additional callbacks are available:
 
 =over 4
 
-=item * C<on_request_ready> - the server is ready for the next request
+=item * C<request_ready> - the server is ready for the next request
 
-=item * C<on_bind_complete> - a Bind request has completed
+=item * C<bind_complete> - a Bind request has completed
 
-=item * C<on_close_complete> - the Close request has completed
+=item * C<close_complete> - the Close request has completed
 
-=item * C<on_command_complete> - the requested command has finished, this will typically be followed by an on_request_ready event
+=item * C<command_complete> - the requested command has finished, this will typically be followed by an on_request_ready event
 
-=item * C<on_copy_in_response> - indicates that the server is ready to receive COPY data
+=item * C<copy_in_response> - indicates that the server is ready to receive COPY data
 
-=item * C<on_copy_out_response> - indicates that the server is ready to send COPY data
+=item * C<copy_out_response> - indicates that the server is ready to send COPY data
 
-=item * C<on_copy_both_response> - indicates that the server is ready to exchange COPY data (for replication)
+=item * C<copy_both_response> - indicates that the server is ready to exchange COPY data (for replication)
 
-=item * C<on_data_row> - data from the current query
+=item * C<data_row> - data from the current query
 
-=item * C<on_empty_query> - special-case response when sent an empty query, can be used for 'ping'. Typically followed by on_request_ready
+=item * C<empty_query> - special-case response when sent an empty query, can be used for 'ping'. Typically followed by on_request_ready
 
-=item * C<on_error> - server has raised an error
+=item * C<error> - server has raised an error
 
-=item * C<on_function_call_result> - results from a function call
+=item * C<function_call_result> - results from a function call
 
-=item * C<on_no_data> - indicate that a query returned no data, typically followed by on_request_ready
+=item * C<no_data> - indicate that a query returned no data, typically followed by on_request_ready
 
-=item * C<on_notice> - server has sent us a notice
+=item * C<notice> - server has sent us a notice
 
-=item * C<on_notification> - server has sent us a NOTIFY
+=item * C<notification> - server has sent us a NOTIFY
 
-=item * C<on_parameter_description> - parameters are being described
+=item * C<parameter_description> - parameters are being described
 
-=item * C<on_parameter_status> - parameter status...
+=item * C<parameter_status> - parameter status...
 
-=item * C<on_parse_complete> - parsing is done
+=item * C<parse_complete> - parsing is done
 
-=item * C<on_portal_suspended> - the portal has been suspended, probably hit the row limit
+=item * C<portal_suspended> - the portal has been suspended, probably hit the row limit
 
-=item * C<on_ready_for_query> - we're ready for queries
+=item * C<ready_for_query> - we're ready for queries
 
-=item * C<on_row_description> - descriptive information about the rows we're likely to be seeing shortly
+=item * C<row_description> - descriptive information about the rows we're likely to be seeing shortly
 
 =back
 
-And the server can send these events:
+And there are also these potential events back from the server:
 
 =over 4
 
-=item * C<on_copy_fail> - the frontend is indicating that the copy has failed
+=item * C<copy_fail> - the frontend is indicating that the copy has failed
 
-=item * C<on_describe> - request for something to be described
+=item * C<describe> - request for something to be described
 
-=item * C<on_execute> - request execution of a given portal
+=item * C<execute> - request execution of a given portal
 
-=item * C<on_flush> - request flush
+=item * C<flush> - request flush
 
-=item * C<on_function_call> - request execution of a given function
+=item * C<function_call> - request execution of a given function
 
-=item * C<on_parse> - request to parse something
+=item * C<parse> - request to parse something
 
-=item * C<on_password> - password information
+=item * C<password> - password information
 
-=item * C<on_query> - simple query request
+=item * C<query> - simple query request
 
-=item * C<on_ssl_request> - we have an SSL request
+=item * C<ssl_request> - we have an SSL request
 
-=item * C<on_startup_message> - we have an SSL request
+=item * C<startup_message> - we have an SSL request
 
-=item * C<on_sync> - sync request
+=item * C<sync> - sync request
 
-=item * C<on_terminate> - termination request
+=item * C<terminate> - termination request
 
 =back
 
@@ -212,48 +212,6 @@ use Protocol::Database::PostgreSQL::Backend::RowDescription;
 
 # Currently v3.0, which is used in PostgreSQL 7.4+
 use constant PROTOCOL_VERSION   => 0x00030000;
-
-# Currently-allowed list of callbacks (can be set via ->configure)
-our @CALLBACKS_ALLOWED = qw(
-    on_send_request
-    on_authenticated
-    on_copy_data
-    on_copy_complete
-    on_request_ready
-    on_bind_complete
-    on_close_complete
-    on_command_complete
-    on_copy_in_response
-    on_copy_out_response
-    on_copy_both_response
-    on_data_row
-    on_empty_query
-    on_error
-    on_function_call_result
-    on_no_data
-    on_notice
-    on_notification
-    on_parameter_description
-    on_parameter_status
-    on_parse_complete
-    on_portal_suspended
-    on_ready_for_query
-    on_row_description
-    on_copy_fail
-    on_describe
-    on_execute
-    on_flush
-    on_function_call
-    on_parse
-    on_password
-    on_query
-    on_ssl_request
-    on_startup_message
-    on_sync
-    on_terminate
-);
-# Hash form for convenience
-our %CALLBACK_MAP = map { $_ => 1 } @CALLBACKS_ALLOWED;
 
 # Types of authentication response
 our %AUTH_TYPE = (
@@ -617,39 +575,16 @@ sub new {
 
 Does the real preparation for the object.
 
-Takes callbacks as named parameters, including:
-
-=over 4
-
-=item * on_error
-
-=item * on_data_row
-
-=item * on_ready_for_query
-
-=back
-
 =cut
 
 sub configure {
     my $self = shift;
     my %args = @_;
 
-# Init parameters - should only be needed on first call
-    $self->{$_} = [] for grep !exists $self->{$_}, qw(pending_execute pending_describe message_queue);
     $self->{$_} = 0 for grep !exists $self->{$_}, qw(authenticated message_count);
     $self->{wait_for_startup} = 1 unless exists $self->{wait_for_startup};
-    $self->state('Unconnected');
+    $self->{$_} = delete $args{$_} for grep exists $args{$_}, qw(user pass database replication outgoing);
 
-    $self->{$_} = delete $args{$_} for grep exists $args{$_}, qw(debug user pass database replication outgoing);
-
-# Callbacks
-    for my $k (grep /on_(.+)$/, keys %args) {
-        warn "Legacy callback $k found";
-        my ($event) = $k =~ /on_(.+)$/;
-        die "Unknown callback '$k'" unless exists $CALLBACK_MAP{$k};
-        $self->bus->subscribe_to_event($event => delete $args{$k});
-    }
     return %args;
 }
 
@@ -1030,9 +965,6 @@ sub send_next_in_queue {
             "send data: [" . join(" ", map sprintf("%02x", ord($_)), split //, $msg) . "], " . $FRONTEND_MESSAGE_CODE{substr($msg, 0, 1)} . " (" . join("", grep { /^([a-z0-9,()_ -])$/ } split //, $msg) . ")"
         });
         $self->outgoing->emit($msg);
-
-        # Ping the callback to let it know message is now in flight
-        $info->{callback}->($self, $info) if exists $info->{callback};
     }
     return $self;
 }
@@ -1235,7 +1167,7 @@ sub prepare {
 
 =head2 prepare_async
 
-Set up a L<Protocol::Database::PostgreSQL::Statement> allowing callbacks and other options to be provided.
+Set up a L<Protocol::Database::PostgreSQL::Statement>.
 
 =cut
 

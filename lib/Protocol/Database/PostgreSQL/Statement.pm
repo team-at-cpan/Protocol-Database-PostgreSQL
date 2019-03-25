@@ -3,8 +3,6 @@ package Protocol::Database::PostgreSQL::Statement;
 use strict;
 use warnings;
 
-use parent qw(Mixin::Event::Dispatch);
-
 use Scalar::Util;
 use Data::Dumper;
 

@@ -3,6 +3,8 @@ package Protocol::Database::PostgreSQL::FieldDescription;
 use strict;
 use warnings;
 
+# VERSION
+
 =head1 NAME
 
 Protocol::Database::PostgreSQL::FieldDescription - field definitions
@@ -80,5 +82,5 @@ Tom Molesworth <TEAM@cpan.org>
 
 =head1 LICENSE
 
-Copyright Tom Molesworth 2010-2015. Licensed under the same terms as Perl itself.
+Copyright Tom Molesworth 2010-2019. Licensed under the same terms as Perl itself.
 

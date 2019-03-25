@@ -781,7 +781,7 @@ sub frontend_execute {
     my ($self, %args) = @_;
 
     my $msg = pack('Z*N1', defined($args{portal}) ? $args{portal} : '', $args{limit} || 0);
-    push @{$self->{pending_execute}}, $args{sth} if $args{sth};
+    # push @{$self->{pending_execute}}, $args{sth} if $args{sth};
     $log->debug("Executing " . (defined($args{portal}) ? "portal " . $args{portal} : "default portal") . ($args{limit} ? " with limit " . $args{limit} : " with no limit"));
     return $self->build_message(
         type    => 'Execute',
@@ -1136,12 +1136,9 @@ Send a simple query to the server - only supports plain queries (no bind paramet
 
 sub simple_query {
     my ($self, $sql) = @_;
-    # die "Invalid backend state" if $self->backend_state eq 'error';
 
-    $log->debug("Running query [$sql]");
-    $self->queue(
-        message => $self->message('Query', sql => $sql)
-    );
+    $log->tracef("Running query [%s]", $sql);
+    $self->send_message('Query', sql => $sql);
     return $self;
 }
 

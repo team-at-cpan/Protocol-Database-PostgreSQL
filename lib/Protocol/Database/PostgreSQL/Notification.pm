@@ -7,7 +7,7 @@ use warnings;
 
 use Adapter::Async::Model {
 	channel => 'string',
-	pid => 'int',
+	pid     => 'int',
 	payload => 'string'
 };
 

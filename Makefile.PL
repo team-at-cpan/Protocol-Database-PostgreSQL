@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use 5.010;
+use 5.006;
 
 use ExtUtils::MakeMaker;
 
@@ -14,7 +14,7 @@ my %WriteMakefileArgs = (
   },
   "DISTNAME" => "Protocol-Database-PostgreSQL",
   "LICENSE" => "perl",
-  "MIN_PERL_VERSION" => "5.010",
+  "MIN_PERL_VERSION" => "5.006",
   "NAME" => "Protocol::Database::PostgreSQL",
   "PREREQ_PM" => {
     "Adapter::Async" => 0,
@@ -23,10 +23,8 @@ my %WriteMakefileArgs = (
     "Digest::MD5" => 0,
     "Exporter" => 0,
     "Future" => "0.39",
-    "JSON::MaybeXS" => 0,
     "List::Util" => 0,
     "Log::Any" => "1.050",
-    "Log::Any::Adapter" => 0,
     "POSIX" => 0,
     "Ryu" => "0.023",
     "Sub::Identify" => 0,
@@ -68,10 +66,8 @@ my %FallbackPrereqs = (
   "Future" => "0.39",
   "IO::Handle" => 0,
   "IPC::Open3" => 0,
-  "JSON::MaybeXS" => 0,
   "List::Util" => 0,
   "Log::Any" => "1.050",
-  "Log::Any::Adapter" => 0,
   "POSIX" => 0,
   "Protocol::Database::PostgreSQL::Statement" => 0,
   "Ryu" => "0.023",

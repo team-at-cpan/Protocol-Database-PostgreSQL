@@ -18,7 +18,6 @@ my %WriteMakefileArgs = (
   "NAME" => "Protocol::Database::PostgreSQL",
   "PREREQ_PM" => {
     "Adapter::Async" => 0,
-    "Adapter::Async::Model" => 0,
     "Check::UnitCheck" => 0,
     "Digest::MD5" => 0,
     "Exporter" => 0,
@@ -55,7 +54,6 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "Adapter::Async" => 0,
-  "Adapter::Async::Model" => 0,
   "Check::UnitCheck" => 0,
   "Digest::MD5" => 0,
   "Exporter" => 0,

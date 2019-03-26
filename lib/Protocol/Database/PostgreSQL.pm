@@ -174,6 +174,8 @@ And there are also these potential events back from the server:
 
 =cut
 
+no indirect;
+
 use Digest::MD5 ();
 use Time::HiRes ();
 use POSIX qw(strftime);
@@ -182,8 +184,6 @@ use Log::Any qw($log);
 use Ryu;
 use Future;
 use Sub::Identify;
-
-use Protocol::Database::PostgreSQL::RowDescription;
 
 use Protocol::Database::PostgreSQL::Backend::AuthenticationRequest;
 use Protocol::Database::PostgreSQL::Backend::BackendKeyData;

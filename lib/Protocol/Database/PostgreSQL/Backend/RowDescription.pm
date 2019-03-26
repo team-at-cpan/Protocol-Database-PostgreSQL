@@ -15,9 +15,6 @@ Protocol::Database::PostgreSQL::Backend::RowDescription
 
 =cut
 
-use Protocol::Database::PostgreSQL::RowDescription;
-use Protocol::Database::PostgreSQL::FieldDescription;
-
 use Log::Any qw($log);
 
 sub description { shift->{description} }

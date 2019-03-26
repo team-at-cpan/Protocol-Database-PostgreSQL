@@ -1,10 +1,13 @@
 requires 'parent';
+requires 'indirect';
 requires 'Digest::MD5';
 requires 'Time::HiRes';
 requires 'POSIX';
 requires 'Ryu', '>= 0.023';
 requires 'Log::Any', '>= 1.050';
 requires 'Check::UnitCheck', 0;
+requires 'Future', '>= 0.39';
+requires 'Sub::Identify';
 requires 'Adapter::Async', 0;
 
 on 'test' => sub {

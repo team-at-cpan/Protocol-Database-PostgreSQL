@@ -20,6 +20,5 @@ on 'test' => sub {
 
 on 'develop' => sub {
     requires 'HTML::TreeBuilder', 0;
-    requires 'JSON::MaybeXS', 0;
 };
 

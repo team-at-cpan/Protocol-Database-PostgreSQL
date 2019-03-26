@@ -3,7 +3,6 @@ use strict;
 use warnings;
 
 use HTML::TreeBuilder;
-use JSON::MaybeXS;
 
 my $html = HTML::TreeBuilder->new;
 # https://www.postgresql.org/docs/current/static/errcodes-appendix.html

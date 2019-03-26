@@ -29,5 +29,5 @@ Tom Molesworth <TEAM@cpan.org>
 
 =head1 LICENSE
 
-Copyright Tom Molesworth 2010-2018. Licensed under the same terms as Perl itself.
+Copyright Tom Molesworth 2010-2019. Licensed under the same terms as Perl itself.
 

@@ -296,7 +296,7 @@ our %MESSAGE_TYPE_FRONTEND = (
     PasswordMessage => 'p',
     Query           => 'Q',
 # Both of these are handled separately, and for legacy reasons they don't
-# have a byte prefix for the message code 
+# have a byte prefix for the message code
 #   SSLRequest      => '',
 #   StartupMessage  => '',
     Sync            => 'S',

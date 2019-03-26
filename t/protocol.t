@@ -6,9 +6,9 @@ use Test::Fatal;
 use Protocol::Database::PostgreSQL;
 
 sub is_hex($$$) {
-	my ($check, $expected, $txt) = @_;
-	my @hex = split / /, $expected;
-	is(unpack('H*', $check), join('', @hex), $txt);
+    my ($check, $expected, $txt) = @_;
+    my @hex = split / /, $expected;
+    is(unpack('H*', $check), join('', @hex), $txt);
 }
 
 my $pg = new_ok('Protocol::Database::PostgreSQL' => [ ]);

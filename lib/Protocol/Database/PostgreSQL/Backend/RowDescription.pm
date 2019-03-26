@@ -25,8 +25,8 @@ sub description { shift->{description} }
 sub new_from_message {
     my ($class, $msg) = @_;
     my (undef, undef, $count) = unpack('C1N1n1', $msg);
-    my $row = Protocol::Database::PostgreSQL::RowDescription->new;
     substr $msg, 0, 7, '';
+    my @desc;
     foreach my $id (0..$count-1) {
         my ($name, $table_id, $field_id, $data_type, $data_size, $type_modifier, $format_code) = unpack('Z*N1n1N1n1N1n1', $msg);
         my %data = (
@@ -41,11 +41,11 @@ sub new_from_message {
         if($log->is_debug) {
             $log->tracef('%s => %s', $_, $data{$_}) for sort keys %data;
         }
-        $row->add_field(Protocol::Database::PostgreSQL::FieldDescription->new(%data));
+        push @desc, \%data;
         substr $msg, 0, 19 + length($name), '';
     }
     return $class->new(
-        description => $row
+        description => \@desc
     );
 }
 

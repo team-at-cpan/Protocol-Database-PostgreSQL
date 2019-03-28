@@ -11,24 +11,43 @@ Protocol::Database::PostgreSQL - support for the PostgreSQL wire protocol
 
 =head1 SYNOPSIS
 
- use strict; use warnings;
- package PostgreSQL::Client;
- use parent q{Protocol::Database::PostgreSQL::Client};
+ use strict;
+ use warnings;
+ use mro;
+ package Example::PostgreSQL::Client;
 
- sub new { my $self = shift->SUPER::new(@_); $self->{socket} = $self->connect(...); $self }
- sub on_send_request { shift->socket->send(@_) }
- sub socket { shift->{socket} }
+ sub new { bless { @_[1..$#_] }, $_[0] }
 
- sub connect { ... } # provide a method to connect to the server
- sub incoming { shift->socket->read(@_) } # provide a method which passes on data from server
+ sub protocol {
+  my ($self) = @_;
+  $self->{protocol} //= Protocol::Database::PostgresQL->new(
+   outgoing => $self->outgoing,
+  )
+ }
+ # Any received packets will arrive here
+ sub incoming { shift->{incoming} //= Ryu::Source->new }
+ # Anything we want to send goes here
+ sub outgoing { shift->{outgoing} //= Ryu::Source->new }
 
- package main;
- my $client = PostgreSQL::Client->new(user => ..., server => ..., database => ...);
- $client->simple_query(sql => q{select * from table}, on_data_row => sub {
-    my ($client, %args) = @_;
-    my @cols = $args{row};
-    print join(',', @cols) . "\n";
- });
+ ...
+ # We raise events on our incoming source in this example -
+ # if you prefer to handle each message as it's extracted you
+ # could add that directly in the loop
+ $self->incoming
+   ->switch_str(
+    sub { $_->type },
+    authentication_request => sub { ... },
+    sub { warn 'unknown message - ' . $_->type }
+   );
+ # When there's something to write, we'll get an event here
+ $self->outgoing
+      ->each(sub { $sock->write($_) });
+ while(1) {
+  $sock->read(my $buf, 1_000_000);
+  while(my $msg = $self->protocol->extract_message(\$buf)) {
+   $self->incoming->emit($msg);
+  }
+ }
 
 =head1 DESCRIPTION
 
@@ -623,7 +642,7 @@ sub frontend_bind {
             " with $count parameter(s): ",
             join(',', @{$args{param}})
         )
-    });
+    }) if $log->is_debug;
     return $self->build_message(
         type    => 'Bind',
         data    => $msg,
@@ -663,7 +682,6 @@ sub frontend_close {
           : ''
         )
     );
-    push @{$self->{pending_close}}, $args{on_complete} if $args{on_complete};
     return $self->build_message(
         type    => 'Close',
         data    => $msg,
@@ -694,15 +712,10 @@ sub frontend_describe {
     my ($self, %args) = @_;
 
     my $msg = pack('a1Z*', exists $args{portal} ? 'P' : 'S', defined($args{statement}) ? $args{statement} : (defined($args{portal}) ? $args{portal} : ''));
-    # push @{$self->{pending_describe}}, $args{sth} if $args{sth};
     return $self->build_message(
         type    => 'Describe',
         data    => $msg,
     );
-    # . $self->build_message(
-    #     type    => 'Query',
-    #     data    => "\0"
-    # );
 }
 
 =head2 frontend_execute
@@ -715,8 +728,7 @@ sub frontend_execute {
     my ($self, %args) = @_;
 
     my $msg = pack('Z*N1', defined($args{portal}) ? $args{portal} : '', $args{limit} || 0);
-    # push @{$self->{pending_execute}}, $args{sth} if $args{sth};
-    $log->debug("Executing " . (defined($args{portal}) ? "portal " . $args{portal} : "default portal") . ($args{limit} ? " with limit " . $args{limit} : " with no limit"));
+    $log->debug("Executing " . (defined($args{portal}) ? "portal " . $args{portal} : "default portal") . ($args{limit} ? " with limit " . $args{limit} : " with no limit")) if $log->is_debug;
     return $self->build_message(
         type    => 'Execute',
         data    => $msg,
@@ -842,14 +854,6 @@ sub frontend_terminate {
     );
 }
 
-=head2 has_queued
-
-Returns number of queued messages.
-
-=cut
-
-sub has_queued { 0 + @{$_[0]->{message_queue}} }
-
 =head2 is_authenticated
 
 Returns true if we are authenticated (and can start sending real data).
@@ -868,26 +872,6 @@ Returns true if this is the first message, as per L<http://developer.postgresql.
 =cut
 
 sub is_first_message { $_[0]->{message_count} < 1 }
-
-=head2 initial_request
-
-Generate and send the startup request.
-
-=cut
-
-sub initial_request {
-    my $self = shift;
-    my %args = @_;
-    my %param = map { $_ => exists $args{$_} ? delete $args{$_} : $self->{$_} } qw(database user application_name replication);
-    delete @param{grep { !defined($param{$_}) } keys %param};
-    die "don't know how to handle " . join(',', keys %args) if keys %args;
-
-    $log->debugf("Sending %s", \%param);
-    $self->send_message('StartupMessage', %param);
-    $self->state('InitialRequestSent');
-    $self->{wait_for_startup} = 0;
-    return $self;
-}
 
 =head2 send_message
 
@@ -916,57 +900,6 @@ sub send_message {
 }
 
 sub outgoing { shift->{outgoing} // die 'no outgoing source' }
-
-=head2 queue
-
-Queue up a message for sending. The message will only be sent when we're in ReadyForQuery
-mode, which could be immediately or later.
-
-=cut
-
-sub queue {
-    my ($self, %args) = @_;
-
-    # Get raw message data to send, could be passed as a ready-built message packet or a set of parameters.
-    # Might get a message with no parameters.
-    my $msg = delete $args{message} || $self->message(
-        delete $args{type},
-        @{ delete $args{parameters} || [] }
-    );
-
-    # Add this to the queue
-    push @{$self->{message_queue}}, {
-        message => $msg,
-        %args
-    };
-
-    $self->send_next_in_queue if $self->is_ready;
-    return $self;
-}
-
-=head2 send_next_in_queue
-
-Send the next queued message.
-
-=cut
-
-sub send_next_in_queue {
-    my $self = shift;
-
-    # TODO Clean up the duplication between this method and L</send_message>.
-    if(my $info = shift @{$self->{message_queue}}) {
-        my $msg = delete $info->{message};
-        return $msg->() if ref $msg eq 'CODE';
-
-        # Clear flag so we only send a single message rather than hammering the server with everything in the queue
-        $self->{is_ready} = 0;
-        $log->debug(sub {
-            "send data: [" . join(" ", map sprintf("%02x", ord($_)), split //, $msg) . "], " . $FRONTEND_MESSAGE_CODE{substr($msg, 0, 1)} . " (" . join("", grep { /^([a-z0-9,()_ -])$/ } split //, $msg) . ")"
-        });
-        $self->outgoing->emit($msg);
-    }
-    return $self;
-}
 
 =head2 method_for_frontend_type
 
@@ -1032,11 +965,6 @@ sub handle_message {
     # Clear the ready-to-send flag until we've processed this
     $self->{is_ready} = 0;
     return ('Protocol::Database::PostgreSQL::Backend::' . $type)->new_from_message($msg);
-}
-
-sub send_ssl_request {
-    my ($self) = @_;
-    $self->outgoing->emit($self->ssl_request);
 }
 
 sub ssl_request {

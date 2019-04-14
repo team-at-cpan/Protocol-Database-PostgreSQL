@@ -26,6 +26,7 @@ my %WriteMakefileArgs = (
     "Log::Any" => "1.050",
     "POSIX" => 0,
     "Ryu" => "0.023",
+    "Ryu::Exception" => 0,
     "Sub::Identify" => 0,
     "Time::HiRes" => 0,
     "constant" => 0,
@@ -45,7 +46,7 @@ my %WriteMakefileArgs = (
     "Test::More" => "0.98",
     "Test::Refcount" => "0.07"
   },
-  "VERSION" => "1.000",
+  "VERSION" => "1.001",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -66,6 +67,7 @@ my %FallbackPrereqs = (
   "Log::Any" => "1.050",
   "POSIX" => 0,
   "Ryu" => "0.023",
+  "Ryu::Exception" => 0,
   "Sub::Identify" => 0,
   "Test::CheckDeps" => "0.010",
   "Test::Fatal" => "0.010",

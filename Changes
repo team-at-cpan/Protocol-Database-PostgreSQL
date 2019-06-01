@@ -1,6 +1,10 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+    New features:
+
+    - supports the latest set of error fields allowed in ErrorResponse and NoticeResponse messages,
+    as of version 12 beta
 
 1.003     2019-05-05 19:13:17+08:00 Asia/Kuala_Lumpur
     No new features.

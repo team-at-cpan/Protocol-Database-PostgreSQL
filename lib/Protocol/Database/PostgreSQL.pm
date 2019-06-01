@@ -3,7 +3,7 @@ package Protocol::Database::PostgreSQL;
 use strict;
 use warnings;
 
-our $VERSION = '1.003';
+our $VERSION = '1.004';
 
 =head1 NAME
 
@@ -259,7 +259,7 @@ our %BACKEND_STATE = (
 # used for error and notice responses
 our %NOTICE_CODE = (
     S   => 'severity',
-    V   => 'severity',
+    V   => 'severity_unlocalised',
     C   => 'code',
     M   => 'message',
     D   => 'detail',
@@ -268,6 +268,11 @@ our %NOTICE_CODE = (
     p   => 'internal_position',
     q   => 'internal_query',
     W   => 'where',
+    s   => 'schema',
+    t   => 'table',
+    c   => 'column',
+    d   => 'data_type',
+    n   => 'constraint',
     F   => 'file',
     L   => 'line',
     R   => 'routine'

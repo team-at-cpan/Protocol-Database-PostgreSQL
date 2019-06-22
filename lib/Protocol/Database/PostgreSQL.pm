@@ -794,7 +794,7 @@ sub frontend_password_message {
         # then stick 'md5' at the front.
         $pass = 'md5' . Digest::MD5::md5_hex(
             Digest::MD5::md5_hex(Unicode::UTF8::encode_utf8($pass) . Unicode::UTF8::encode_utf8($args{user}))
-            . Unicode::UTF8::encode_utf8($args{password_salt})
+            . $args{password_salt}
         );
     }
 

@@ -3,7 +3,7 @@ package Protocol::Database::PostgreSQL;
 use strict;
 use warnings;
 
-our $VERSION = '1.005';
+our $VERSION = '2.000';
 
 =head1 NAME
 
@@ -977,7 +977,11 @@ Returns the method name for the given frontend type.
 sub method_for_frontend_type {
     my ($self, $type) = @_;
     my $method = 'frontend' . $type;
-    $method =~ s/([A-Z])/'_' . lc $1/ge;
+    for ($method) {
+        s{([A-Z0-9]+)([A-Z])}{"_" . lc($1) . "_" . lc($2)}ge;
+        s{([A-Z]+)}{"_" . lc($1)}ge;
+    }
+    # $method =~ s/([A-Z])/'_' . lc $1/ge;
     $method
 }
 
@@ -1195,7 +1199,7 @@ sub build_message {
 
     # Length includes the 4-byte length field, but not the type byte
     my $length = length($args{data}) + 4;
-    return (defined($args{type}) ? $MESSAGE_TYPE_FRONTEND{$args{type}} : '') . pack('N1', $length) . $args{data};
+    return (defined($args{type}) ? ($MESSAGE_TYPE_FRONTEND{$args{type}} // die 'unknown message ' . $args{type})  : '') . pack('N1', $length) . $args{data};
 }
 
 sub state { $_[0]->{state} = $_[1] }

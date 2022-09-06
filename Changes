@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+2.000     2022-09-07 04:59:16+08:00 Asia/Singapore
     New features:
 
     - support for SCRAM-SHA256 (see Database::Async::Engine::PostgreSQL for the other half

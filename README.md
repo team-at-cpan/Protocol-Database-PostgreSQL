@@ -50,7 +50,7 @@ Provides protocol-level support for PostgreSQL 7.4+, as defined in [http://www.p
 
 The short answer: don't.
 
-Use [Database::Async::Engine::PostgreSQL](https://metacpan.org/pod/Database::Async::Engine::PostgreSQL) instead, unless you're writing a driver for talking to PostgreSQL (or compatible) systems.
+Use [Database::Async::Engine::PostgreSQL](https://metacpan.org/pod/Database%3A%3AAsync%3A%3AEngine%3A%3APostgreSQL) instead, unless you're writing a driver for talking to PostgreSQL (or compatible) systems.
 
 This distribution provides the abstract protocol handling, meaning that it understands the packets that make up the PostgreSQL
 communication protocol, but it does **not** attempt to send or receive those packets itself. You need to provide the transport layer
@@ -74,7 +74,7 @@ Possible states:
 
 ## Message types
 
-The ["type" in Protocol::Database::Backend](https://metacpan.org/pod/Protocol::Database::Backend#type) for incoming messages can currently include the following:
+The ["type" in Protocol::Database::Backend](https://metacpan.org/pod/Protocol%3A%3ADatabase%3A%3ABackend#type) for incoming messages can currently include the following:
 
 - `send_request` - Called each time there is a new message to be sent to the other side of the connection.
 - `authenticated` - Called when authentication is complete
@@ -155,6 +155,10 @@ Parse SQL for a prepared statement
 ## frontend\_password\_message
 
 Password data, possibly encrypted depending on what the server specified.
+
+## frontend\_sasl\_initial
+
+Initial client response for SASL authentication
 
 ## frontend\_query
 
@@ -237,16 +241,16 @@ Construct a new message.
 
 Some PostgreSQL-related modules - plenty of things build on these so have a look at the relevant reverse deps if you're after something higher level:
 
-- [DBD::Pg](https://metacpan.org/pod/DBD::Pg) - uses the official library and (unlike this module) provides full support for [DBI](https://metacpan.org/pod/DBI)
-- [Pg::PQ](https://metacpan.org/pod/Pg::PQ) - another libpq wrapper
+- [DBD::Pg](https://metacpan.org/pod/DBD%3A%3APg) - uses the official library and (unlike this module) provides full support for [DBI](https://metacpan.org/pod/DBI)
+- [Pg::PQ](https://metacpan.org/pod/Pg%3A%3APQ) - another libpq wrapper
 - [Postgres](https://metacpan.org/pod/Postgres) - quite an old (1998) libpq binding
 - [Pg](https://metacpan.org/pod/Pg) - slightly less old (2000) libpq binding
-- [DBD::PgPP](https://metacpan.org/pod/DBD::PgPP) - provides another pure-Perl implemmentation, with the focus on DBI compatibility
+- [DBD::PgPP](https://metacpan.org/pod/DBD%3A%3APgPP) - provides another pure-Perl implemmentation, with the focus on DBI compatibility
 
 Other related database protocols:
 
-- [Protocol::MySQL](https://metacpan.org/pod/Protocol::MySQL) - Oracle's popular database product
-- [Protocol::TDS](https://metacpan.org/pod/Protocol::TDS) - the tabular data stream protocol, mainly of interest for SQL Server users
+- [Protocol::MySQL](https://metacpan.org/pod/Protocol%3A%3AMySQL) - Oracle's popular database product
+- [Protocol::TDS](https://metacpan.org/pod/Protocol%3A%3ATDS) - the tabular data stream protocol, mainly of interest for SQL Server users
 
 # AUTHOR
 

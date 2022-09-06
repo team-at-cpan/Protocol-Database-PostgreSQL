@@ -204,6 +204,7 @@ use Ryu;
 use Future;
 use Sub::Identify;
 use Unicode::UTF8;
+use MIME::Base64;
 
 use Protocol::Database::PostgreSQL::Backend::AuthenticationRequest;
 use Protocol::Database::PostgreSQL::Backend::BackendKeyData;
@@ -242,6 +243,9 @@ our %AUTH_TYPE = (
     7   => 'AuthenticationGSS',
     8   => 'AuthenticationGSSContinue',
     9   => 'AuthenticationSSPI',
+    10  => 'AuthenticationSASL',
+    11  => 'AuthenticationSASLContinue',
+    12  => 'AuthenticationSASLFinal',
 );
 
 # The terms "backend" and "frontend" used in the documentation here reflect
@@ -319,6 +323,8 @@ our %MESSAGE_TYPE_FRONTEND = (
     FunctionCall    => 'F',
     Parse           => 'P',
     PasswordMessage => 'p',
+    SASLInitialResponse => 'p',
+    SASLResponse    => 'p',
     Query           => 'Q',
 # Both of these are handled separately, and for legacy reasons they don't
 # have a byte prefix for the message code
@@ -803,6 +809,41 @@ sub frontend_password_message {
     return $self->build_message(
         type    => 'PasswordMessage',
         data    => pack('Z*', $pass)
+    );
+}
+
+=head2 frontend_sasl_initial
+
+Initial client response for SASL authentication
+
+=cut
+
+sub frontend_sasl_initial_response {
+    my ($self, %args) = @_;
+
+    my $nonce = $args{nonce} // die 'no nonce provided';
+    my $mech  = $args{mechanism} // die 'no SASL mechanism provided';
+
+    my $data = 'n,,n=,r=' . $nonce;
+    return $self->build_message(
+        type    => 'SASLInitialResponse',
+        data    => pack('Z*N/a*', $mech, $data)
+    );
+}
+
+sub frontend_sasl_response {
+    my ($self, %args) = @_;
+
+    my $nonce = $args{nonce} // die 'no nonce provided';
+    my $proof = $args{proof} // die 'no proof provided';
+    my $header = $args{header} // die 'no header provided';
+
+    $header = MIME::Base64::encode_base64($header, '');
+    $proof = MIME::Base64::encode_base64($proof, '');
+    my $data = "c=$header,r=$nonce,p=$proof";
+    return $self->build_message(
+        type    => 'SASLResponse',
+        data    => pack('A*', $data)
     );
 }
 

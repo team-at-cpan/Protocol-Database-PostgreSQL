@@ -649,12 +649,12 @@ sub frontend_bind {
         if(!defined $p) {
             $param .= pack 'N1', 0xFFFFFFFF;
         } else {
-            $param .= pack 'N/a*', Unicode::UTF8::encode_utf8($p);
+            $param .= pack 'N/a*', $p;
         }
     }
     my $msg = pack('Z*Z*n1n1a*n1',
-        Unicode::UTF8::encode_utf8($args{portal} // ''),
-        Unicode::UTF8::encode_utf8($args{statement} // ''),
+        $args{portal} // '',
+        $args{statement} // '',
         0,      # Parameter types
         $count, # Number of bound parameters
         $param, # Actual parameter values
@@ -703,9 +703,9 @@ sub frontend_close {
     my $msg = pack('a1Z*',
         exists $args{portal} ? 'P' : 'S', # close a portal or a statement
           defined($args{statement})
-        ? Unicode::UTF8::encode_utf8($args{statement})
+        ? $args{statement}
         :  (defined($args{portal})
-          ? Unicode::UTF8::encode_utf8($args{portal})
+          ? $args{portal}
           : ''
         )
     );
@@ -738,7 +738,7 @@ Describe expected SQL results
 sub frontend_describe {
     my ($self, %args) = @_;
 
-    my $msg = pack('a1Z*', exists $args{portal} ? 'P' : 'S', defined($args{statement}) ? Unicode::UTF8::encode_utf8($args{statement}) : (defined($args{portal}) ? Unicode::UTF8::encode_utf8($args{portal}) : ''));
+    my $msg = pack('a1Z*', exists $args{portal} ? 'P' : 'S', defined($args{statement}) ? $args{statement} : (defined($args{portal}) ? $args{portal} : ''));
     return $self->build_message(
         type    => 'Describe',
         data    => $msg,
@@ -755,7 +755,7 @@ sub frontend_execute {
     my ($self, %args) = @_;
 
     $args{portal} //= '';
-    my $msg = pack('Z*N1', Unicode::UTF8::encode_utf8($args{portal}), $args{limit} || 0);
+    my $msg = pack('Z*N1', $args{portal}, $args{limit} || 0);
     $log->tracef(
         "Executing portal '%s' %s",
         $args{portal},
@@ -777,7 +777,7 @@ sub frontend_parse {
     my ($self, %args) = @_;
     die "No SQL provided" unless defined $args{sql};
 
-    my $msg = pack('Z*Z*n1', (defined($args{statement}) ? Unicode::UTF8::encode_utf8($args{statement}) : ''), Unicode::UTF8::encode_utf8($args{sql}), 0);
+    my $msg = pack('Z*Z*n1', (defined($args{statement}) ? $args{statement} : ''), $args{sql}, 0);
     return $self->build_message(
         type    => 'Parse',
         data    => $msg,
@@ -857,7 +857,7 @@ sub frontend_query {
     my ($self, %args) = @_;
     return $self->build_message(
         type    => 'Query',
-        data    => pack('Z*', Unicode::UTF8::encode_utf8($args{sql}))
+        data    => pack('Z*', $args{sql})
     );
 }
 
@@ -879,7 +879,7 @@ sub frontend_startup_message {
     }
     $log->tracef("Startup with %s", \%args);
 
-    my $parameters = join('', map { pack('Z*', $_) } map { Unicode::UTF8::encode_utf8($_), Unicode::UTF8::encode_utf8($args{$_}) } grep { exists $args{$_} } qw(user database options application_name replication));
+    my $parameters = join('', map { pack('Z*', $_) } map { $_, $args{$_} } grep { exists $args{$_} } qw(user database options application_name replication));
     $parameters .= "\0";
 
     return $self->build_message(

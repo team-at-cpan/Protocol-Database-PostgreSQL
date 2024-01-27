@@ -1,0 +1,98 @@
+Revision history for Protocol-Database-PostgreSQL
+
+2.001     2024-01-27 16:59:10+08:00 Asia/Singapore
+    [New features]
+
+    - latest error codes added from https://www.postgresql.org/docs/current/errcodes-appendix.html
+
+2.000     2022-09-07 04:59:16+08:00 Asia/Singapore
+    New features:
+
+    - support for SCRAM-SHA256 (see Database::Async::Engine::PostgreSQL for the other half
+    of the implementation)
+
+1.005     2019-06-30 01:46:24+08:00 Asia/Kuala_Lumpur
+    No new features.
+
+    Bugs fixed:
+
+    - inconsistent encoding in some messages, *UTF-8 is now applied for SQL query content
+    to match COPY statements and other cases including passwords*. In future, the choice
+    of encoding may be exposed as an option - for now, hardcoded as UTF-8.
+
+1.004     2019-06-02 01:31:48+08:00 Asia/Kuala_Lumpur
+    New features:
+
+    - supports the latest set of error fields allowed in ErrorResponse and NoticeResponse messages,
+    as of version 12 beta
+    - also supports new error codes as listed in https://www.postgresql.org/docs/12/errcodes-appendix.html
+
+1.003     2019-05-05 19:13:17+08:00 Asia/Kuala_Lumpur
+    No new features.
+
+    Bugs fixed:
+
+    - the COPY handling assumed that the caller would apply encoding, but since that wasn't
+    documented and much of the rest of the code assumes UTF-8 anyway (delimiters and newlines
+    for example), we now explicitly encode the COPY items when in text format.
+
+1.002     2019-04-28 05:23:16+08:00 Asia/Kuala_Lumpur
+    No new features.
+
+    Dependencies:
+
+    - due to postfix dereference, perl 5.024+ is required (thanks to ANDK for reporting)
+
+1.001     2019-04-15 05:55:03+08:00 Asia/Kuala_Lumpur
+    New features:
+
+    - Protocol::Database::PostgreSQL::Error class for better abstraction and
+    error handling
+    - Proper COPY IN/OUT support (text protocol only for now)
+
+    Cosmetic:
+
+    - in debug mode, was generating a lot of unimportant output - have downgraded
+    that to trace level instead.
+
+1.000     2019-03-28 21:15:00+08:00 Asia/Kuala_Lumpur
+
+    Forked from Protocol::PostgreSQL due to significant API changes.
+
+Old Protocol::PostgreSQL version history:
+
+0.008     2011-07-16 22:42:10 Europe/London
+	Switch to Mixin::Event::Dispatch for event handling. Now uses ->invoke_event and
+	->add_handler_for_event to deal with events, passing on_* callbacks to statement
+	handles and db handles is still supported.
+	Pass through the statement and portal when building a statement.
+	Support ->discard on a statement handle
+	Pass through ->debug value rather than setting true/false
+	Wait for a startup event before processing queued requests
+	Additional events:
+	* command_complete now passed through when calling ->prepare_async
+	* close_complete supported in statements, with pending queued handlers
+
+0.007     2011-06-11 17:38:59 Europe/London
+	Included some extra callbacks for statements so that we know when it's safe to send data, and provide
+	support for the terminate/close requests so we disconnect cleanly.
+
+0.006     2011-02-26 18:55:27 Europe/London
+	More support for COPY IN, interleaved prepared statements and callbacks for data_row / no_data conditions.
+	Improved performance slightly by moving some slow debug handling into coderefs.
+
+0.005     2011-02-20 18:14:42 Europe/London
+	Better handling of interleaved prepared statements (need to be named for this to work as expected).
+
+0.004     2011-02-20 04:25:53 Europe/London
+	Finish send_copy_data implementation.
+
+0.003     2011-02-20 02:28:32 Europe/London
+	Primitive support for the extra COPY callbacks.
+
+0.002     2011-02-14 00:21:32 Europe/London
+	Basic support for prepared queries and COPY.
+
+0.001     2011-02-12 12:40:54 Europe/London
+	Preliminary release to CPAN.
+

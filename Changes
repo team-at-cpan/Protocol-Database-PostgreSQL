@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+2.001     2024-01-27 16:59:10+08:00 Asia/Singapore
     [New features]
 
     - latest error codes added from https://www.postgresql.org/docs/current/errcodes-appendix.html

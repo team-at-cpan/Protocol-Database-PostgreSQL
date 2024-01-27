@@ -312,26 +312,26 @@ our %BACKEND_MESSAGE_CODE = reverse %MESSAGE_TYPE_BACKEND;
 
 # Mapping from name to frontend message code (single byte)
 our %MESSAGE_TYPE_FRONTEND = (
-    Bind            => 'B',
-    Close           => 'C',
-    CopyData        => 'd',
-    CopyDone        => 'c',
-    CopyFail        => 'f',
-    Describe        => 'D',
-    Execute         => 'E',
-    Flush           => 'H',
-    FunctionCall    => 'F',
-    Parse           => 'P',
-    PasswordMessage => 'p',
+    Bind                => 'B',
+    Close               => 'C',
+    CopyData            => 'd',
+    CopyDone            => 'c',
+    CopyFail            => 'f',
+    Describe            => 'D',
+    Execute             => 'E',
+    Flush               => 'H',
+    FunctionCall        => 'F',
+    Parse               => 'P',
+    PasswordMessage     => 'p',
     SASLInitialResponse => 'p',
-    SASLResponse    => 'p',
-    Query           => 'Q',
+    SASLResponse        => 'p',
+    Query               => 'Q',
 # Both of these are handled separately, and for legacy reasons they don't
 # have a byte prefix for the message code
-#   SSLRequest      => '',
-#   StartupMessage  => '',
-    Sync            => 'S',
-    Terminate       => 'X',
+#   SSLRequest          => '',
+#   StartupMessage      => '',
+    Sync                => 'S',
+    Terminate           => 'X',
 );
 our %FRONTEND_MESSAGE_CODE = reverse %MESSAGE_TYPE_FRONTEND;
 
